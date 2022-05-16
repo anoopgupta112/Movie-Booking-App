@@ -1,8 +1,14 @@
 const express = require("express");
 const app = express();
 const PORT = 9000;
-
-
+const cors = require("cors");
+const db = require("./models");
+const genreRouter = require("./routes/genre.routes");
+const artistRouter = require("./routes/artist.routes");
+const movieRouter = require("./routes/movie.routes");
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to Upgrad Movie booking application development." });
+});
 app.get("/movies", (request, resopnse) => {
     resopnse.json("All Movies Data in JSON format from Mongo DB");
 
@@ -20,7 +26,7 @@ app.listen(PORT, () => {
 })
 
 // database code
-const db = require("./models");
+
 db.mongoose
     .connect(db.url, {
         useNewUrlParser: true,
@@ -31,6 +37,11 @@ db.mongoose
 
     })
     .catch(err => {
-        console.log("Cannot connect to the database!", err);
+        console.log("Can not connect to the database!", err);
         process.exit();
     });
+
+app.use("/api/genres", genreRouter);
+app.use("/api/artists", artistRouter);
+app.use("/api/movies", movieRouter);
+
