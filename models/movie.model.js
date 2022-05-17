@@ -1,71 +1,48 @@
 module.exports = (mongoose) => {
-    const Movie = mongoose.model(
-        "movie",
-        mongoose.Schema({
-            movieid: {
-                type: Number,
-                required: true,
-                unique: true,
-            },
-            title: {
-                type: String,
-                required: true,
-            },
-            published: {
-                type: Boolean,
-                required: true,
-            },
-            released: {
-                type: Boolean,
-                required: true,
-            },
-            poster_url: {
-                type: String,
-                required: true,
-            },
-            release_date: {
-                type: String,
-                required: true,
-            },
-            publish_date: {
-                type: String,
-                required: true,
-            },
-            artists: {
-                type: [],
-                required: true,
-            },
-            genres: {
-                type: [],
-                required: true,
-            },
-            duration: {
-                type: Number,
-                required: true,
-            },
-            critic_rating: {
-                type: Number,
-                required: true,
-                min: 1,
-                max: 5,
-            },
-            trailer_url: {
-                type: String,
-                required: true,
-            },
-            wiki_url: {
-                type: String,
-                required: true,
-            },
-            story_line: {
-                type: String,
-                required: true,
-            },
-            shows: {
-                type: [],
-                required: true,
-            },
-        })
-    );
-    return Movie;
+    const userSchema = mongoose.Schema({
+        userid: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+            validate: (value) => isEmail(value),
+        },
+        first_name: {
+            type: String,
+            required: true,
+        },
+        last_name: {
+            type: String,
+            required: true,
+        },
+        username: String,
+        contact: {
+            type: String,
+            required: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+        role: {
+            type: String,
+            enum: ["user", "admin"],
+            default: "user",
+        },
+        isLoggedIn: Boolean,
+        uuid: String,
+        accesstoken: String,
+        coupens: [],
+        bookingRequests: [],
+    });
+    userSchema.pre("save", function (next) {
+        this.username = this.first_name + this.last_name;
+        next();
+    });
+    const User = mongoose.model("user", userSchema);
+
+    return User;
 };

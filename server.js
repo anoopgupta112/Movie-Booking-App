@@ -6,6 +6,7 @@ const db = require("./models");
 const genreRouter = require("./routes/genre.routes");
 const artistRouter = require("./routes/artist.routes");
 const movieRouter = require("./routes/movie.routes");
+const userRouter = require("./routes/user.routes");
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to Upgrad Movie booking application development." });
 });
@@ -25,6 +26,9 @@ app.listen(PORT, () => {
     console.log("Running at PORT " + PORT)
 })
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // database code
 
 db.mongoose
@@ -41,6 +45,7 @@ db.mongoose
         process.exit();
     });
 
+app.use("/api/auth", userRouter);
 app.use("/api/genres", genreRouter);
 app.use("/api/artists", artistRouter);
 app.use("/api/movies", movieRouter);

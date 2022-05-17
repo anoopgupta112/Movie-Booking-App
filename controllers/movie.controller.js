@@ -16,7 +16,7 @@ async function findAllMovies(req, res) {
         }
         if ("artists" in REQ_QUERIES) {
             const artists = REQ_QUERIES["artists"].split(",");
-            //get all the first_names
+
             const firstNames = artists.map((artist) => artist.split(" ")[0]);
             DB_QUERY["artists.first_name"] = {};
             DB_QUERY["artists.first_name"]["$in"] = firstNames;
