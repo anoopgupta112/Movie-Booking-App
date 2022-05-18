@@ -1,3 +1,5 @@
+const { Movie } = require("../models");
+
 async function findAllMovies(req, res) {
     try {
         const REQ_QUERIES = req.query;
@@ -50,4 +52,4 @@ module.exports = {
     findAllMovies,
     findOne,
     findShows,
-}; 
+};

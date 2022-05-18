@@ -1,12 +1,17 @@
 const express = require("express");
 const app = express();
-const PORT = 9000;
+const PORT = process.env.PORT || 8085;
 const cors = require("cors");
 const db = require("./models");
 const genreRouter = require("./routes/genre.routes");
 const artistRouter = require("./routes/artist.routes");
 const movieRouter = require("./routes/movie.routes");
 const userRouter = require("./routes/user.routes");
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
+
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to Upgrad Movie booking application development." });
 });
@@ -22,6 +27,8 @@ app.get("/artists", (request, resopnse) => {
     resopnse.json("All Artists Data in JSON format from Mongo DB");
 
 });
+
+
 app.listen(PORT, () => {
     console.log("Running at PORT " + PORT)
 })
@@ -29,6 +36,13 @@ app.listen(PORT, () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+app.use(
+    cors({
+        origin: "http://localhost:3000",
+        optionsSuccessStatus: 200,
+    })
+);
 // database code
 
 db.mongoose
